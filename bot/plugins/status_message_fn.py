@@ -32,6 +32,13 @@ from bot.helper_funcs.display_progress import (
 )
 
 
+def get_command_arg(message):
+    text = (getattr(message, "text", "") or "").strip()
+    parts = text.split(" ", maxsplit=1)
+    if len(parts) < 2:
+        return None
+    arg = parts[1].strip()
+    return arg or None
 
 
 async def exec_message_f(client, message):
@@ -39,7 +46,9 @@ async def exec_message_f(client, message):
     if True:
         DELAY_BETWEEN_EDITS = 0.3
         PROCESS_RUN_TIME = 100
-        cmd = message.text.split(" ", maxsplit=1)[1]
+        cmd = get_command_arg(message)
+        if not cmd:
+            return await message.reply_text("Usage: /exec <command>")
 
         reply_to_id = message.id
         if message.reply_to_message:
@@ -82,7 +91,10 @@ async def exec_message_f(client, message):
 async def eval_message_f(client, message):
     if message.from_user.id in AUTH_USERS:
         status_message = await message.reply_text("Processing ...")
-        cmd = message.text.split(" ", maxsplit=1)[1]
+        cmd = get_command_arg(message)
+        if not cmd:
+            await status_message.edit("Usage: /eval <python_code>")
+            return
 
         reply_to_id = message.id
         if message.reply_to_message:
