@@ -8,7 +8,7 @@ logging.basicConfig(
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 LOGGER = logging.getLogger(__name__)
 
-import os, asyncio, pyrogram, psutil, platform, time
+import os, asyncio, pyrogram, psutil, platform, time, traceback
 from bot import data
 from bot.plugins.incoming_message_fn import incoming_compress_message_f
 from pyrogram.types import Message
@@ -42,7 +42,11 @@ async def add_task(message: Message):
         os.system('rm -rf /app/downloads/*')
         await incoming_compress_message_f(message)
     except Exception as e:
-        LOGGER.info(e)  
+        LOGGER.exception("Compression task failed")
+        try:
+            await message.reply_text(f"⚠️ Task failed: {str(e)}")
+        except Exception:
+            LOGGER.info(traceback.format_exc())
     await on_task_complete()
 
 async def sysinfo(e):

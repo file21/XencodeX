@@ -74,6 +74,15 @@ def ts(milliseconds: int) -> str:
     return tmp[:-2]
 
 
+def get_command_arg(message):
+    text = (getattr(message, "text", "") or "").strip()
+    parts = text.split(" ", maxsplit=1)
+    if len(parts) < 2:
+        return None
+    arg = parts[1].strip()
+    return arg or None
+
+
 if __name__ == "__main__" :
     # create download directory, if not exist
     if not os.path.isdir(DOWNLOAD_LOCATION):
@@ -97,7 +106,9 @@ if __name__ == "__main__" :
     @app.on_message(filters.incoming & filters.command(["crf", f"crf@{BOT_USERNAME}"]))
     async def changecrf(app, message):
         if message.from_user.id in AUTH_USERS:
-            cr = message.text.split(" ", maxsplit=1)[1]
+            cr = get_command_arg(message)
+            if not cr:
+                return await message.reply_text("Usage: /crf <value>")
             OUT = f"I will be using : {cr} crf"
             crf.insert(0, f"{cr}")
             await message.reply_text(OUT)
@@ -121,7 +132,9 @@ if __name__ == "__main__" :
     @app.on_message(filters.incoming & filters.command(["resolution", f"resolution@{BOT_USERNAME}"]))
     async def changer(app, message):
         if message.from_user.id in AUTH_USERS:
-            r = message.text.split(" ", maxsplit=1)[1]
+            r = get_command_arg(message)
+            if not r:
+                return await message.reply_text("Usage: /resolution <value>")
             OUT = f"I will be using : {r} resolution"
             resolution.insert(0, f"{r}")
             await message.reply_text(OUT)
@@ -133,7 +146,9 @@ if __name__ == "__main__" :
     @app.on_message(filters.incoming & filters.command(["preset", f"preset@{BOT_USERNAME}"]))
     async def changepr(app, message):
         if message.from_user.id in AUTH_USERS:
-            pop = message.text.split(" ", maxsplit=1)[1]
+            pop = get_command_arg(message)
+            if not pop:
+                return await message.reply_text("Usage: /preset <value>")
             OUT = f"I will be using : {pop} preset"
             preset.insert(0, f"{pop}")
             await message.reply_text(OUT)
@@ -144,7 +159,9 @@ if __name__ == "__main__" :
     @app.on_message(filters.incoming & filters.command(["codec", f"codec@{BOT_USERNAME}"]))
     async def changecode(app, message):
         if message.from_user.id in AUTH_USERS:
-            col = message.text.split(" ", maxsplit=1)[1]
+            col = get_command_arg(message)
+            if not col:
+                return await message.reply_text("Usage: /codec <value>")
             OUT = f"I will be using : {col} codec"
             codec.insert(0, f"{col}")
             await message.reply_text(OUT)
@@ -154,7 +171,9 @@ if __name__ == "__main__" :
     @app.on_message(filters.incoming & filters.command(["audio", f"audio@{BOT_USERNAME}"]))
     async def changea(app, message):
         if message.from_user.id in AUTH_USERS:
-            aud = message.text.split(" ", maxsplit=1)[1]
+            aud = get_command_arg(message)
+            if not aud:
+                return await message.reply_text("Usage: /audio <value>")
             OUT = f"I will be using : {aud} audio"
             audio_b.insert(0, f"{aud}")
             await message.reply_text(OUT)

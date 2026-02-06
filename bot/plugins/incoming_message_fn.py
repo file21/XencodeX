@@ -6,7 +6,7 @@ logging.basicConfig(
 )
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 LOGGER = logging.getLogger(__name__)
-import os, time, asyncio, json
+import os, time, asyncio, json, shutil
 from bot.localisation import Localisation
 from bot import (
   DOWNLOAD_LOCATION, 
@@ -198,6 +198,11 @@ async def incoming_compress_message_f(update):
   text=Localisation.DOWNLOAD_START,
   reply_to_message_id=update.id
               )
+  if shutil.which("ffmpeg") is None:
+    await sent_message.edit_text(
+      text="⚠️ ffmpeg is not installed on this server. Please install ffmpeg and restart the bot."
+    )
+    return
   chat_id = LOG_CHANNEL
   utc_now = datetime.datetime.utcnow()
   ist_now = utc_now + datetime.timedelta(minutes=30, hours=5)
