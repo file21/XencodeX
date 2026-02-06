@@ -6,23 +6,23 @@ class Config(object):
     # sucks Dude
     APP_ID = int(get_config("APP_ID", "7324525"))
     API_HASH = get_config("API_HASH", "d28604398dc13af15dd108bb34a27a54")
-    LOG_CHANNEL = get_config("LOG_CHANNEL", "zen_log")
+    LOG_CHANNEL = get_config("LOG_CHANNEL", "Enc_Log")
     UPDATES_CHANNEL = get_config("UPDATES_CHANNEL", None) # Without `@` LOL
      # Get these values from my.telegram.org
     AUTH_USERS = set(
         int(x) for x in get_config(
-            "AUTH_USERS", "760067286",
+            "AUTH_USERS", "730412993",
             should_prompt=True
         )
     )
 # array , simplest method was AUTH_USERS = [] ; AUTH_USERS.append(your telegram id) 🤣
     # array to store the channel ID who are authorized to use the bot
     # dont u fucking remove this id 😤
-    TG_BOT_TOKEN = get_config("TG_BOT_TOKEN", "7254713452:AAGuM_2RcFKxWYfggSRYgDN7L-199_nglwE")
+    TG_BOT_TOKEN = get_config("TG_BOT_TOKEN", "8351002028:AAHjwj930ylmIzYiZRelIcfzrAC5q7DSpyE")
     # the download location, where the HTTP Server runs
     DOWNLOAD_LOCATION = get_config("DOWNLOAD_LOCATION", "/app/downloads")
     # Telegram maximum file upload size
-    BOT_USERNAME = get_config("BOT_USERNAME", "EncodingChidoriBot")
+    BOT_USERNAME = get_config("BOT_USERNAME", "Encode888bot")
     MAX_FILE_SIZE = 2097152000
     TG_MAX_FILE_SIZE = 2097152000
     FREE_USER_MAX_FILE_SIZE = 2097152000
