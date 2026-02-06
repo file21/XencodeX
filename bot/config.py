@@ -1,4 +1,13 @@
 from bot.get_cfg import get_config
+
+
+def _parse_auth_users(raw_ids: str):
+    normalized = str(raw_ids or "").strip().replace(",", " ")
+    normalized = normalized.replace("[", " ").replace("]", " ")
+    normalized = normalized.replace(chr(34), " ").replace("'", " ")
+    return set(int(user_id.strip()) for user_id in normalized.split() if user_id.strip())
+
+
 class Config(object):
     # You can keep this default
     SESSION_NAME = get_config("SESSION_NAME", "AHCompressorBot")
@@ -9,8 +18,8 @@ class Config(object):
     LOG_CHANNEL = get_config("LOG_CHANNEL", "Enc_Log")
     UPDATES_CHANNEL = get_config("UPDATES_CHANNEL", None) # Without `@` LOL
      # Get these values from my.telegram.org
-    AUTH_USERS = set(
-        int(x) for x in get_config(
+    AUTH_USERS = _parse_auth_users(
+        get_config(
             "AUTH_USERS", "730412993",
             should_prompt=True
         )

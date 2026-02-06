@@ -52,6 +52,13 @@ audio_b.append("35k")
 
 uptime = dt.now()
 
+def is_authorized_user(message):
+    user = getattr(message, "from_user", None)
+    if user and user.id in AUTH_USERS:
+        return True
+    return message.chat.id in AUTH_USERS
+
+
 def ts(milliseconds: int) -> str:
     seconds, milliseconds = divmod(int(milliseconds), 1000)
     minutes, seconds = divmod(seconds, 60)
@@ -157,7 +164,7 @@ if __name__ == "__main__" :
         
     @app.on_message(filters.incoming & filters.command(["compress", f"compress@{BOT_USERNAME}"]))
     async def help_message(app, message):
-        if message.chat.id not in AUTH_USERS:
+        if not is_authorized_user(message):
             return await message.reply_text("You are not authorised to use this bot contact @Ichigo_zen")
         query = await message.reply_text("File Added to Queue ⏰...\n\nPlease be patient, Encode will start soon", quote=True)
         data.append(message.reply_to_message)
@@ -183,7 +190,7 @@ if __name__ == "__main__" :
         
     @app.on_message(filters.incoming & (filters.video | filters.document))
     async def help_message(app, message):
-        if message.chat.id not in AUTH_USERS:
+        if not is_authorized_user(message):
             return await message.reply_text("You are not authorised to use this bot\n\nContact @Ichigo_zen for Access")
         query = await message.reply_text("File Added to Queue ⏰...\n\nPlease be patient, Encode will start soon", quote=True)
         data.append(message)
@@ -193,7 +200,7 @@ if __name__ == "__main__" :
             
     @app.on_message(filters.incoming & (filters.photo))
     async def help_message(app, message):
-        if message.chat.id not in AUTH_USERS:
+        if not is_authorized_user(message):
             return await message.reply_text("You are not authorised to use this bot\n\nContact @Ichigo_zen for Access")
         os.system('rm thumb.jpg')
         await message.download(file_name='/app/thumb.jpg')
